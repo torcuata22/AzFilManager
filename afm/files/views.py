@@ -47,7 +47,7 @@ def upload_file(request):
             file_name = file.name
             upload_file_to_blob(file, file_name)    
             messages.success(request, f"{file.name} was successfully uploaded")
-    return render(request, 'files/upload_file.html', {})
+    return render(request, 'files/upload_files.html', {})
 
 
 def delete_file(request,blob_name):
