@@ -2,4 +2,38 @@
 
 {% block body %}
 
+<div class="container justify-content-center">
+    <h2 class="my-4 mx-3" >Uploaded Files</h2>
+    
+{% for blob_name in blob_name_list %}
+
+            <ul class="list-unstyled mx-3">
+                <li class="container-flex">{{blob_name}}</li>
+                <a href="{% url 'download_file' blob_name %}" class="webster-blue text-white btn-sm float-right mx-2" >Download</a>
+               <a href="{% url 'delete_file' blob_name %}" class="btn webster-yellow btn-sm float-right mx-2">Delete</a> 
+            </ul>
+        
+{% endfor %}
+
+<div class="flex justify-content-center text-center">
+<br>
+<br>
+
+ {% if blob_name_list.has_previous %}
+
+<a class="btn-sm webster-blue text-white" href="?page=1"> First</a>
+<a class="btn-sm webster-blue text-white" href="?page={{blob_name_list.previous_page_number}}"> Previous</a>
+{% endif %}
+
+
+{% if blob_name_list.has_next %}
+<a class="btn-sm webster-blue text-white" href="?page={{blob_name_list.next_page_number}}">Next</a>
+<a class="btn-sm webster-blue text-white" href="?page={{blob_name_list.paginator.num_pages}}">Last</a>
+{% endif %}
+</br>
+</div>
+<p class="text-center small">
+    Page: {{blob_name_list.number}} of {{blob_name_list.paginator.num_pages}}
+</p>
+
 {% endblock %}

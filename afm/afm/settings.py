@@ -21,6 +21,15 @@ env = environ.Env()
 #Take environment variables from .env file: 
 environ.Env.read_env()
 
+AZURE_STORAGE_ACCOUNT=env.str('AZURE_STORAGE_ACCOUNT')
+AZURE_VAULT_ACCOUNT=env.str('AZURE_VAULT_ACCOUNT')
+AZURE_STORAGE_KEY_NAME=env.str('AZURE_STORAGE_KEY_NAME')
+#=env.str('AZURE_APP_BLOB_NAME')
+STORAGE_ACCOUNT_KEY=env.str('STORAGE_ACCOUNT_KEY')
+STORAGE_ACCOUNT_NAME=env.str('STORAGE_ACCOUNT_NAME')
+CONNECTION_STRING=env.str('CONNECTION_STRING')
+CONTAINER_NAME=env.str('CONTAINER_NAME')
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
