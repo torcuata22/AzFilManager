@@ -4,7 +4,7 @@
 <div class="container w-50 mt-4">
     <h1 class="m-5">Images Upload</h1>
     <p class="m-5">Upload your files using the form provided below.</p>
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" action="{% url 'upload_file' %}">
                     {%csrf_token%}
 
                     <div class="input-group">
