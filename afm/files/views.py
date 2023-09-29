@@ -4,7 +4,9 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect, HttpRespons
 from django.conf import settings
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
-from django.core.files.base import ContentFile
+from django.views.generic import ListView
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 from azure.storage.blob import BlobServiceClient
 from uuid import uuid4
@@ -34,7 +36,7 @@ def list_files(request):
     container_name = settings.CONTAINER_NAME
     container_client = blob_service_client.get_container_client(container_name)
     blob_list = list_blobs_in_container(container_name=container_name)
-    paginator = Paginator(blob_list, 2)  # Change the number of items per page as needed
+    paginator = Paginator(blob_list, 5)  # Change the number of items per page as needed
     page = request.GET.get('page') 
     blob_name_list = paginator.get_page(page)
     
@@ -68,48 +70,6 @@ def upload_file(request):
                 return HttpResponseServerError("Failed to upload the file to Azure Blob Storage.")
     return render(request, 'files/upload_files.html', {})
 
-
-    # if request.method == "POST": 
-    #     files = request.FILES.getlist('files')
-    #     container_name = settings.CONTAINER_NAME
-    #     connection_string = settings.CONNECTION_STRING
-    #     for file in files:
-    #         file_name = file.name
-    #         file_content = ContentFile(file.read())
-    #         print(f"Uploading file: {file_name}")
-    #         result = upload_file_to_blob(container_name, connection_string, file_content, file_name)
-    #         if result:
-    #             messages.success(request, f"{file_name} was successfully uploaded")
-    #             print(f"File uploaded successfully. URL: {result}")
-    #         else:
-    #             messages.error(request, f"Failed to upload {file_name}")
-    #             print(f"Failed to upload {file_name}")
-    #             return HttpResponseServerError("Failed to upload the file to Azure Blob Storage.")
-    # return render(request, 'files/upload_files.html', {})
-
-
-
-
-
-
-    # if request.method == "POST": 
-    #     files = request.FILES.getlist('files')
-    #     container_name = settings.CONTAINER_NAME
-    #     connection_string = settings.CONNECTION_STRING
-    #     for file in files:
-    #         file_name = file.name
-    #         print(f"Uploading file: {file_name}")
-    #         result = upload_file_to_blob(container_name, connection_string, file, file_name)
-    #         if result:
-    #             messages.success(request, f"{file_name} was successfully uploaded")
-    #             print(f"File uploaded successfully. URL: {result}")
-    #         else:
-    #             messages.error(request, f"Failed to upload {file_name}")
-    #             print(f"Failed to upload {file_name}")
-    #             return HttpResponseServerError("Failed to upload the file to Azure Blob Storage.")
-    # return render(request, 'files/upload_files.html', {})
-
-
 def delete_file(request, blob_name):
     """
     Delete a file from Azure Blob Storage.
@@ -134,3 +94,10 @@ def download_file(request, blob_name):
         return response
     
     return render(request, 'files/list_files.html', {})
+
+#AUTHENTICATION:
+@login_required
+class IndexListView(ListView):
+    model = User
+    template_name = "registration/login.html"
+    context_object_name = "users"
