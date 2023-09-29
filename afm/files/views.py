@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.http import Http404, HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.conf import settings
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
-from django.views.generic import ListView
+from django.views import generic
+from django.views.generic import ListView, CreateView
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
@@ -21,6 +23,9 @@ from .azure_controller import (
     list_blobs_in_container,
     save_file_url_to_db,
 )
+from .forms import UserRegistrationForm
+
+
 
 def index(request):
     """
@@ -101,3 +106,21 @@ class IndexListView(ListView):
     model = User
     template_name = "registration/login.html"
     context_object_name = "users"
+
+
+class RegistrationView(generic.CreateView):
+    form_class = UserRegistrationForm
+    template_name = 'registration/register.html'
+    success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Registration successful! You can now log in.')
+        return response
+    
+
+@login_required        
+def logout_user(request):
+    logout(request)
+    messages.success(request, "You've been succesfully logged out")
+    return redirect("login")

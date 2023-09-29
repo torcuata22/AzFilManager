@@ -1,0 +1,55 @@
+{% extends '../files/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="container">
+
+    <h1 class="text-center my-5">Register</h1>
+    <div class="col-md-3"></div>
+    <div class="container col-md-6">
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group row">
+            <label for="{{ form.username.id_for_label }}" class="col-md-2 col-form-label text-form">Username:</label>
+            <div class="col-md-10">
+                {{ form.username }}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="{{ form.password.id_for_label }}" class="col-md-2 col-form-label text-form">Enter Password:</label>
+            <div class="col-md-10">
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <p class="text-danger bg-white">
+                        {{ form.password.errors }}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="{{ form.password2.id_for_label }}" class="col-md-2 col-form-label text-form">Confirm Password:</label>
+            <div class="col-md-10">
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                <p class="text-danger bg-white">
+                    {{ form.password2.errors }}
+                </p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="offset-md-2 col-md-10">
+                <button type="submit" class="btn btn-sm btn-outline-success">Register</button>
+            </div>
+        </div>
+    </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
