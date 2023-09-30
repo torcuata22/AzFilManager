@@ -3,43 +3,48 @@
 {% block body %}
 
 <div class="container">
-    <h2 class="my-4 mx-3">Uploaded Files</h2>
+    {% if user.is_authenticated %}
+        <h2 class="my-4 mx-3">Uploaded Files</h2>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>File Name</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for blob_name in blob_name_list %}
-            <tr>
-                <td>{{ blob_name }}</td>
-                <td>
-                    <a href="{% url 'download_file' blob_name %}" class="btn btn-primary btn-sm">Download</a>
-                    <a href="{% url 'delete_file' blob_name %}" class="btn btn-danger btn-sm">Delete</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>File Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for blob_name in blob_name_list %}
+                <tr>
+                    <td>{{ blob_name }}</td>
+                    <td>
+                        <a href="{% url 'download_file' blob_name %}" class="btn btn-primary btn-sm">Download</a>
+                        <a href="{% url 'delete_file' blob_name %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-    <div class="d-flex justify-content-center">
-        {% if blob_name_list.has_previous %}
-        <a class="btn btn-sm btn-outline-secondary mx-2" href="?page=1">First</a>
-        <a class="btn btn-sm btn-outline-secondary mx-2" href="?page={{ blob_name_list.previous_page_number }}">Previous</a>
-        {% endif %}
+        <div class="d-flex justify-content-center">
+            {% if blob_name_list.has_previous %}
+            <a class="btn btn-sm btn-outline-secondary mx-2" href="?page=1">First</a>
+            <a class="btn btn-sm btn-outline-secondary mx-2" href="?page={{ blob_name_list.previous_page_number }}">Previous</a>
+            {% endif %}
 
-        {% if blob_name_list.has_next %}
-        <a class="btn btn-sm btn-outline-secondary mx-2" href="?page={{ blob_name_list.next_page_number }}">Next</a>
-        <a class="btn btn-sm btn-outline-secondary mx-2" href="?page={{ blob_name_list.paginator.num_pages }}">Last</a>
-        {% endif %}
-    </div>
+            {% if blob_name_list.has_next %}
+            <a class="btn btn-sm btn-outline-secondary mx-2" href="?page={{ blob_name_list.next_page_number }}">Next</a>
+            <a class="btn btn-sm btn-outline-secondary mx-2" href="?page={{ blob_name_list.paginator.num_pages }}">Last</a>
+            {% endif %}
+        </div>
 
-    <p class="text-center small">
-        Page: {{ blob_name_list.number }} of {{ blob_name_list.paginator.num_pages }}
-    </p>
+        <p class="text-center small">
+            Page: {{ blob_name_list.number }} of {{ blob_name_list.paginator.num_pages }}
+        </p>
+    {% else %}
+        <h4 class="mt-5 text-center">You need to <a href="{% url 'login' %}">login</a> to see this page</h4>
+    {% endif %}
+
 </div>
 
 {% endblock %}

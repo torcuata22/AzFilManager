@@ -1,6 +1,7 @@
 {% extends './base.html' %}
 
 {% block body %}
+{% if user.is_authenticated %}
 <div class="container w-60 mt-4">
     <div class="card border-0">
         <div class="card-body">
@@ -12,6 +13,9 @@
         </div>
     </div>
 </div>
+{% else %}
+<h4 class="mt-5 text-center">You need to <a href="{% url 'login' %}">login</a> to see this page</h4>
+{% endif %}
 {% endblock %}
 
 
