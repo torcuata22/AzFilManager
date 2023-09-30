@@ -19,7 +19,7 @@
                     <td>{{ blob_name }}</td>
                     <td>
                         <a href="{% url 'download_file' blob_name %}" class="btn btn-primary btn-sm">Download</a>
-                        <a href="{% url 'delete_file' blob_name %}" class="btn btn-danger btn-sm">Delete</a>
+                        <a href="{% url 'delete_file' blob_name %}" class="btn btn-danger btn-sm" data-confirm="Are you sure you wish to delete this file?" id="delete-file">Delete</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -46,5 +46,23 @@
     {% endif %}
 
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var deleteButtons = document.querySelectorAll(".btn-danger[data-confirm]");
+
+        deleteButtons.forEach(function(deleteButton) {
+            deleteButton.addEventListener("click", function(event) {
+                var confirmation = confirm(deleteButton.getAttribute("data-confirm"));
+                if (!confirmation) {
+                    event.preventDefault();
+                }
+            });
+        });
+    });
+</script>
+
+
+
 
 {% endblock %}
